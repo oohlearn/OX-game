@@ -45,6 +45,22 @@ function TicTacToc() {
     winnerStepsList: [],
     lastStepsToWin: {},
   });
+
+  const handleClickSquare = (squareId) => {
+    const isSquareDisable =
+      playerStepsMap[PLAYERS[0]].includes(squareId) &&
+      playerStepsMap[PLAYERS[1]].includes(squareId);
+    if (!isSquareDisable) {
+      const nextPlayerStepMap = {
+        ...playerStepsMap,
+        [currentPlayerId]: [...playerStepsMap[currentPlayerId], squareId],
+      };
+      setPlayerStepMap(nextPlayerStepMap);
+      setCurrentPlayerId((prev) => prev * -1);
+    }
+    console.log(playerStepsMap);
+  };
+
   const { winnerId, winnerStepsList, lastStepsToWin } = judgmentInfo;
   const isGameEndedInTie = PLAYERS.flatMap((playerId) => playerStepsMap[playerId]).length === 9;
   // Q為何不能只用map就好?
@@ -58,7 +74,11 @@ function TicTacToc() {
           winnerId={winnerId}
           isGameEndedInTie={isGameEndedInTie}
         />
-        <Squares playerStepsMap={playerStepsMap} winnerStepsList={winnerStepsList} />
+        <Squares
+          playerStepsMap={playerStepsMap}
+          winnerStepsList={winnerStepsList}
+          handleClickSquare={handleClickSquare}
+        />
         <div className="actions">
           <RestartButton />
           <SwitchButton isActive={isSinglePlay} />
@@ -69,7 +89,6 @@ function TicTacToc() {
 }
 
 export default TicTacToc;
-// handleClickSquare={handleClickSquare}
 {
   /* <RestartButton onClick={handleResetAllState} />; */
 }
