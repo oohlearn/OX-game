@@ -6,11 +6,10 @@ const pinkPurple = {
     hover: "#FFB3C1",
     active: "#fa506f",
   },
-  chess: "#FFFFFF",
   restartButton: {
     normal: "#FFBD00",
     hover: "#FFC933",
-    active: "FFBE0A",
+    active: "#FFBE0A",
   },
   switchButton: {
     on: "#FF758F",

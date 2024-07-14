@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import Information from "./components/Information";
-import Squares from "./components/squares/index";
+import NineSquares from "./components/Squares/NineSquares";
 import RestartButton from "./components/RestartButton";
 import SwitchButton from "./components/SwitchButton";
 import { useState } from "react";
+import { WINNER_STEPS_LIST } from "./constants";
 
 const TicTacTocStyle = styled.div`
   * {
@@ -14,18 +15,18 @@ const TicTacTocStyle = styled.div`
   display: flex;
   justify-content: center;
   padding: 20px;
-  min-height: 100vh
+  min-height: 100vh;
   box-sizing: border-box;
   /* Q給元件之間一些間距，但語法看不懂 */
   .container {
     display: flex;
     flex-direction: column;
-    &>*: not(: first-of-type) {
+    & > *:not(:first-of-type) {
       margin-top: 4px;
     }
   }
   .actions {
-    &>*: not(: first-of-type) {
+    & > *:not(:first-of-type) {
       margin-top: 4px;
     }
   }
@@ -45,23 +46,54 @@ function TicTacToc() {
     winnerStepsList: [],
     lastStepsToWin: {},
   });
+  const { winnerId, winnerStepsList } = judgmentInfo;
 
   const handleClickSquare = (squareId) => {
     const isSquareDisable =
-      playerStepsMap[PLAYERS[0]].includes(squareId) &&
+      playerStepsMap[PLAYERS[0]].includes(squareId) ||
       playerStepsMap[PLAYERS[1]].includes(squareId);
-    if (!isSquareDisable) {
+    if (!isSquareDisable && !hasWinner) {
       const nextPlayerStepMap = {
         ...playerStepsMap,
         [currentPlayerId]: [...playerStepsMap[currentPlayerId], squareId],
       };
       setPlayerStepMap(nextPlayerStepMap);
+      setJudgmentInfo(getJudgment(nextPlayerStepMap));
       setCurrentPlayerId((prev) => prev * -1);
     }
-    console.log(playerStepsMap);
   };
 
-  const { winnerId, winnerStepsList, lastStepsToWin } = judgmentInfo;
+  const getJudgment = (playerStepsMap) => {
+    const playerIds = Object.keys(playerStepsMap).map((playerId) => Number(playerId));
+    let winnerId = 0;
+    let winnerStepsList = [];
+    playerIds.forEach((playerId) => {
+      const userSteps = playerStepsMap[playerId];
+      const remainingStepList = WINNER_STEPS_LIST.map((steps) =>
+        steps.filter((step) => userSteps.indexOf(step) === -1)
+      ); //跟獲勝路線裡的位置一一對照，獲勝路線裡還沒被填滿的就回傳
+      const foundWinner =
+        remainingStepList.filter((steps, index) => {
+          if (steps.length === 0) {
+            winnerStepsList = [...winnerStepsList, WINNER_STEPS_LIST[index]];
+            return true;
+          }
+          return false;
+        }).length > 0;
+      //Q 後面還接.length>0??
+      if (foundWinner) {
+        winnerId = playerId;
+        console.log(winnerId);
+      }
+    });
+    return {
+      winnerId,
+      winnerStepsList,
+    };
+  };
+  const winnerSteps = winnerStepsList.flatMap((steps) => steps);
+  const hasWinner = winnerId;
+
   const isGameEndedInTie = PLAYERS.flatMap((playerId) => playerStepsMap[playerId]).length === 9;
   // Q為何不能只用map就好?
 
@@ -74,10 +106,11 @@ function TicTacToc() {
           winnerId={winnerId}
           isGameEndedInTie={isGameEndedInTie}
         />
-        <Squares
+        <NineSquares
           playerStepsMap={playerStepsMap}
-          winnerStepsList={winnerStepsList}
+          winnerSteps={winnerSteps}
           handleClickSquare={handleClickSquare}
+          currentPlayerId={currentPlayerId}
         />
         <div className="actions">
           <RestartButton />
