@@ -7,17 +7,19 @@ import { useState } from "react";
 import { WINNER_STEPS_LIST } from "./constants";
 
 const TicTacTocStyle = styled.div`
+  /* *表示每個元素都帶上 */
   * {
     border: 1px solid black;
     padding: 4px;
   }
   /* container在背景置中 */
   display: flex;
+  background: #eeeeee;
   justify-content: center;
   padding: 20px;
   min-height: 100vh;
   box-sizing: border-box;
-  /* Q給元件之間一些間距，但語法看不懂 */
+  /* 給元件之間一些間距*/
   .container {
     display: flex;
     flex-direction: column;
@@ -94,6 +96,12 @@ function TicTacToc() {
   const winnerSteps = winnerStepsList.flatMap((steps) => steps);
   const hasWinner = winnerId;
 
+  const handleResetAllState = () => {
+    setCurrentPlayerId(PLAYERS[0]);
+    setPlayerStepMap(defaultUsersSteps);
+    setJudgmentInfo({ winnerId: 0, winnerStepsList: [] });
+  };
+
   const isGameEndedInTie = PLAYERS.flatMap((playerId) => playerStepsMap[playerId]).length === 9;
   // Q為何不能只用map就好?
 
@@ -113,7 +121,7 @@ function TicTacToc() {
           currentPlayerId={currentPlayerId}
         />
         <div className="actions">
-          <RestartButton />
+          <RestartButton onClick={handleResetAllState} />
           <SwitchButton isActive={isSinglePlay} />
         </div>
       </div>
@@ -122,9 +130,7 @@ function TicTacToc() {
 }
 
 export default TicTacToc;
-{
-  /* <RestartButton onClick={handleResetAllState} />; */
-}
+
 {
   /* <SwitchButton isActive={isSinglePlay} onClick={handleSwitchPlayMode} />; */
 }
