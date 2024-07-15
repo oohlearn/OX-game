@@ -2,19 +2,20 @@ import styled from "styled-components";
 import Information from "./components/Information";
 import NineSquares from "./components/Squares/NineSquares";
 import RestartButton from "./components/RestartButton";
-import SwitchButton from "./components/SwitchButton";
+import SwitchButton from "./components/Switch/SwitchIndex";
 import { useState } from "react";
 import { WINNER_STEPS_LIST } from "./constants";
+import SwitchMode from "./components/SwitchMode";
 
 const TicTacTocStyle = styled.div`
-  /* *表示每個元素都帶上 */
-  * {
+  /* *表示每個元素都帶上，只是輔助線 */
+  /* * {
     border: 1px solid black;
     padding: 4px;
-  }
+  } */
   /* container在背景置中 */
+  background: ${(props) => props.theme.background};
   display: flex;
-  background: #eeeeee;
   justify-content: center;
   padding: 20px;
   min-height: 100vh;
@@ -122,7 +123,7 @@ function TicTacToc() {
         />
         <div className="actions">
           <RestartButton onClick={handleResetAllState} />
-          <SwitchButton isActive={isSinglePlay} />
+          <SwitchMode label="電腦對弈模式" isActive={isSinglePlay} />
         </div>
       </div>
     </TicTacTocStyle>

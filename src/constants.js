@@ -1,5 +1,6 @@
 export const PAGE_PADDING = 8;
 export const MAX_CONTENT_WIDTH = 600;
+export const BUTTON_HEIGHT = 40;
 
 export const WINNER_STEPS_LIST = [
   //  橫
