@@ -19,7 +19,7 @@ const Text = styled.div`
   font-weight: 700;
   font-size: 32px;
   white-space: nowrap;
-  background-color: ${(props) => (props.variant === "piece" ? "#4caf50" : "#FFF")};
+  background-color: ${(props) => (props.$variant === "piece" ? "#4caf50" : "#FFF")};
   &.text {
     color: aqua;
   }
@@ -29,7 +29,7 @@ function Information({ currentPlayerId, winnerId, isGameEndedInTie }) {
   const makeContent = () => {
     const hasWinner = winnerId !== 0;
     if (isGameEndedInTie) {
-      return <Text variant="piece">和局</Text>;
+      return <Text $variant="piece">和局</Text>;
     } else if (!hasWinner) {
       return (
         <InformationContainer>

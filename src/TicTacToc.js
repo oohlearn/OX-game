@@ -2,8 +2,7 @@ import styled from "styled-components";
 import Information from "./components/Information";
 import NineSquares from "./components/Squares/NineSquares";
 import RestartButton from "./components/RestartButton";
-import SwitchButton from "./components/Switch/SwitchIndex";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WINNER_STEPS_LIST } from "./constants";
 import SwitchMode from "./components/SwitchMode";
 
@@ -44,14 +43,19 @@ function TicTacToc() {
   const [currentPlayerId, setCurrentPlayerId] = useState(PLAYERS[0]);
   const [playerStepsMap, setPlayerStepMap] = useState(defaultUsersSteps);
   const [isSinglePlay, setIsSinglePlay] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [judgmentInfo, setJudgmentInfo] = useState({
     winnerId: 0,
     winnerStepsList: [],
     lastStepsToWin: {},
   });
-  const { winnerId, winnerStepsList } = judgmentInfo;
+  const { winnerId, winnerStepsList, lastStepsToWin } = judgmentInfo;
 
   const handleClickSquare = (squareId) => {
+    // 如果在loading的話，表示電腦還在下，玩家就不能進行下棋的動作
+    if (isLoading) {
+      return;
+    }
     const isSquareDisable =
       playerStepsMap[PLAYERS[0]].includes(squareId) ||
       playerStepsMap[PLAYERS[1]].includes(squareId);
@@ -67,6 +71,7 @@ function TicTacToc() {
   };
 
   const getJudgment = (playerStepsMap) => {
+    let lastStepsToWin = { ...defaultUsersSteps };
     const playerIds = Object.keys(playerStepsMap).map((playerId) => Number(playerId));
     let winnerId = 0;
     let winnerStepsList = [];
@@ -77,21 +82,25 @@ function TicTacToc() {
       ); //跟獲勝路線裡的位置一一對照，獲勝路線裡還沒被填滿的就回傳
       const foundWinner =
         remainingStepList.filter((steps, index) => {
+          if (steps.length === 1) {
+            lastStepsToWin[playerId] = [...lastStepsToWin[playerId], ...steps];
+          }
           if (steps.length === 0) {
             winnerStepsList = [...winnerStepsList, WINNER_STEPS_LIST[index]];
             return true;
+          } else {
+            return false;
           }
-          return false;
         }).length > 0;
       //Q 後面還接.length>0??
       if (foundWinner) {
         winnerId = playerId;
-        console.log(winnerId);
       }
     });
     return {
       winnerId,
       winnerStepsList,
+      lastStepsToWin,
     };
   };
   const winnerSteps = winnerStepsList.flatMap((steps) => steps);
@@ -102,6 +111,47 @@ function TicTacToc() {
     setPlayerStepMap(defaultUsersSteps);
     setJudgmentInfo({ winnerId: 0, winnerStepsList: [] });
   };
+
+  const handleSwitchMode = () => {
+    setIsSinglePlay((prev) => !prev);
+  };
+
+  // 找出還可以下棋的格子
+  const getIsBlockEnable = (blockId) => {
+    const allDisabledBlockIds = PLAYERS.flatMap((playerId) => playerStepsMap[playerId]);
+    const isBlockEnable = allDisabledBlockIds.indexOf(blockId) === -1;
+    return isBlockEnable;
+  };
+
+  const selectBlockId = ({ lastStepsToWin, getIsBlockEnable }) => {
+    // Q這塊邏輯不懂
+    const attackList = lastStepsToWin[-1];
+    const protectList = lastStepsToWin[1];
+    const stepToAttack = attackList.filter((blockId) => getIsBlockEnable(blockId));
+    const stepToProtect = protectList.filter((blockId) => getIsBlockEnable(blockId));
+    if (stepToAttack.length > 0) {
+      return stepToAttack[0];
+    }
+    if (stepToProtect.length > 0) {
+      return stepToProtect[0];
+    }
+    let blockId = 4;
+    while (!getIsBlockEnable(blockId)) {
+      blockId = Math.floor(Math.random() * 9);
+    }
+    return blockId;
+  };
+
+  useEffect(() => {
+    if (isSinglePlay && currentPlayerId === -1 && !isGameEndedInTie) {
+      setIsLoading(true);
+      const blockId = selectBlockId({ lastStepsToWin, getIsBlockEnable });
+      setTimeout(() => {
+        setIsLoading(false);
+        handleClickSquare(blockId);
+      }, 1000);
+    }
+  }, [currentPlayerId, isSinglePlay]);
 
   const isGameEndedInTie = PLAYERS.flatMap((playerId) => playerStepsMap[playerId]).length === 9;
   // Q為何不能只用map就好?
@@ -123,7 +173,7 @@ function TicTacToc() {
         />
         <div className="actions">
           <RestartButton onClick={handleResetAllState} />
-          <SwitchMode label="電腦對弈模式" isActive={isSinglePlay} />
+          <SwitchMode label="電腦對弈模式" isActive={isSinglePlay} onClick={handleSwitchMode} />
         </div>
       </div>
     </TicTacTocStyle>
@@ -131,7 +181,3 @@ function TicTacToc() {
 }
 
 export default TicTacToc;
-
-{
-  /* <SwitchButton isActive={isSinglePlay} onClick={handleSwitchPlayMode} />; */
-}

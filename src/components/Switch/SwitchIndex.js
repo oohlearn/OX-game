@@ -19,7 +19,7 @@ const StyleSwitch = styled.div`
   background: ${(props) => props.theme.switchButton.off};
   transition: all 0.2s ease-in-out;
   box-shadow: inset -4px -4px 12px 0px rgn(0 0 0 /20%);
-  ${({ $isActive }) => $isActive && activeThumbStyle}
+  ${({ $isActive }) => $isActive && activeButtonStyle}
   .switchBtn_thumb {
     position: absolute;
     /* 下面三行決定thumb外型 */
@@ -33,13 +33,13 @@ const StyleSwitch = styled.div`
     align-items: center;
     justify-content: center;
     box-shadow: inset -4px -4px 12px 0px rgn(0 0 0 /20%);
-    ${({ $isActive }) => $isActive && activeButtonStyle}
+    ${({ $isActive }) => $isActive && activeThumbStyle}
   }
 `;
 
-function SwitchButton({ isActive }) {
+function SwitchButton({ isActive, onClick }) {
   return (
-    <StyleSwitch>
+    <StyleSwitch $isActive={isActive} onClick={onClick}>
       <div className="switchBtn_thumb">
         <span>{isActive ? "ON" : "OFF"}</span>
       </div>

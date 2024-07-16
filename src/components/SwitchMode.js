@@ -13,10 +13,10 @@ const Label = styled.span`
   color: ${(props) => props.theme.color};
 `;
 
-function SwitchMode({ label, isActive }) {
+function SwitchMode({ label, isActive, onClick }) {
   return (
     <Row>
-      <SwitchButton isActive={isActive} />
+      <SwitchButton isActive={isActive} onClick={onClick} />
       <Label>{label}</Label>
     </Row>
   );
