@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/oohlearn/OX-game/static/css/main.08d48ed8.css",
+    "main.js": "/oohlearn/OX-game/static/js/main.70ab9217.js",
+    "static/js/453.e036e8b5.chunk.js": "/oohlearn/OX-game/static/js/453.e036e8b5.chunk.js",
+    "index.html": "/oohlearn/OX-game/index.html",
+    "main.08d48ed8.css.map": "/oohlearn/OX-game/static/css/main.08d48ed8.css.map",
+    "main.70ab9217.js.map": "/oohlearn/OX-game/static/js/main.70ab9217.js.map",
+    "453.e036e8b5.chunk.js.map": "/oohlearn/OX-game/static/js/453.e036e8b5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.08d48ed8.css",
+    "static/js/main.70ab9217.js"
+  ]
+}
