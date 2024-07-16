@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/github.com/OX-game/static/css/main.08d48ed8.css",
-    "main.js": "/github.com/OX-game/static/js/main.82372ddb.js",
-    "static/js/453.e036e8b5.chunk.js": "/github.com/OX-game/static/js/453.e036e8b5.chunk.js",
-    "index.html": "/github.com/OX-game/index.html",
-    "main.08d48ed8.css.map": "/github.com/OX-game/static/css/main.08d48ed8.css.map",
-    "main.82372ddb.js.map": "/github.com/OX-game/static/js/main.82372ddb.js.map",
-    "453.e036e8b5.chunk.js.map": "/github.com/OX-game/static/js/453.e036e8b5.chunk.js.map"
+    "main.css": "/OX-game/static/css/main.08d48ed8.css",
+    "main.js": "/OX-game/static/js/main.7b1fb666.js",
+    "static/js/453.e036e8b5.chunk.js": "/OX-game/static/js/453.e036e8b5.chunk.js",
+    "index.html": "/OX-game/index.html",
+    "main.08d48ed8.css.map": "/OX-game/static/css/main.08d48ed8.css.map",
+    "main.7b1fb666.js.map": "/OX-game/static/js/main.7b1fb666.js.map",
+    "453.e036e8b5.chunk.js.map": "/OX-game/static/js/453.e036e8b5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.08d48ed8.css",
-    "static/js/main.82372ddb.js"
+    "static/js/main.7b1fb666.js"
   ]
 }
