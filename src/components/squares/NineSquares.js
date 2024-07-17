@@ -17,8 +17,10 @@ const GridContainer = styled("div")`
 `;
 
 function NineSquares({ playerStepsMap, handleClickSquare, winnerSteps }) {
+  // TODO設定9個格子的id：用array的index，value則用fill()填充0，但Id是index，兩個沒關係
   const squareIds = new Array(9).fill(0).map((_, index) => index);
   const playerIds = Object.keys(playerStepsMap);
+  // 用來判斷這個格子是誰的
   const getPlayerId = (squareId) => {
     let foundPlayerId = 0;
     playerIds.forEach((playerId) => {
@@ -27,9 +29,11 @@ function NineSquares({ playerStepsMap, handleClickSquare, winnerSteps }) {
         foundPlayerId = playerId;
       }
     });
-    return parseInt(foundPlayerId);
+    return foundPlayerId;
   };
-  // Q為何下面判斷iswinnerstep要用>-1，不直接用===1?
+  // 為何下面判斷iswinnerstep要用>-1，不直接用===1?
+  // A indexOf的用法，若有找到→回傳索引位置；沒找到 → 回傳-1
+  // 如果直接用 ===1，只要不在1那個位置上，就會是false
   return (
     <>
       <GridContainer>
@@ -37,7 +41,7 @@ function NineSquares({ playerStepsMap, handleClickSquare, winnerSteps }) {
           <Square
             key={squareId}
             onClick={() => handleClickSquare(squareId)}
-            playerId={getPlayerId(squareId)}
+            playerId={parseInt(getPlayerId(squareId))}
             isWinnerStep={winnerSteps.indexOf(squareId) > -1}
           ></Square>
         ))}
@@ -45,7 +49,8 @@ function NineSquares({ playerStepsMap, handleClickSquare, winnerSteps }) {
     </>
   );
 }
-// Q這啥?
+// 這啥?
+// React中的用來進行類型檢查的工具，如果上面出現的型別跟下面列的不一樣，就會在console看到警示
 NineSquares.propTypes = {
   squareId: PropTypes.number,
 };

@@ -68,7 +68,7 @@ function Square({ playerId, onClick, isWinnerStep }) {
     </StyledSquare>
   );
 }
-// Q這啥?
+
 Square.propTypes = {
   playerId: PropTypes.number,
   onClick: PropTypes.func,

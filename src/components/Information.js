@@ -19,10 +19,7 @@ const Text = styled.div`
   font-weight: 700;
   font-size: 32px;
   white-space: nowrap;
-  background-color: ${(props) => (props.$variant === "piece" ? "#4caf50" : "#FFF")};
-  &.text {
-    color: aqua;
-  }
+  color: ${(props) => (props.$variant === "piece" ? "green" : "#4caf50")};
 `;
 
 function Information({ currentPlayerId, winnerId, isGameEndedInTie }) {
